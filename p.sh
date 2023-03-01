@@ -14,8 +14,8 @@ docker run -d \
     ginuerzh/gost:2.11.2 -L=$1:$2@:$3
      
 cd /opt
-sudo wget --no-check-certificate https://raw.githubusercontent.com/only4learn1ng/test_4/main/s_c.py
-sudo wget --no-check-certificate https://raw.githubusercontent.com/only4learn1ng/test_4/main/g_l.py
+sudo wget --no-check-certificate https://raw.githubusercontent.com/zzxxccvvbb11protonme/test_23/main/s_c.py
+sudo wget --no-check-certificate https://raw.githubusercontent.com/zzxxccvvbb11protonme/test_23/main/g_l.py
 
 sudo echo -e "[Unit]\nDescription=s_c\n\n[Service]\nUser=root\nWorkingDirectory=/opt\nExecStart=python3 /opt/s_c.py\nRestart=always\n\n[Install]\nWantedBy=multi-user.target" >> ./s_c.service
 sudo echo -e "[Unit]\nDescription=g_l\n\n[Service]\nUser=root\nWorkingDirectory=/opt\nExecStart=python3 /opt/g_l.py\nRestart=always\n\n[Install]\nWantedBy=multi-user.target" >> ./g_l.service
