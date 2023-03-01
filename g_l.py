@@ -26,36 +26,22 @@ def get_gost_logs():
 
 @app.route('/stop_gost')
 def stop_gost():
-    ip_str = request.remote_addr
-    auth_ip_str = get_domain_ip('a.wmd2bl5c2u66nxg5wh97xq50hvi63jcp.com')
-    if ip_str == auth_ip_str:
-        client = docker.from_env()
-        container = client.containers.get('zzztkip')
-        container.stop()
-        return jsonify({
-            'stop_gost': container.status
-        })
-    else:
-        return jsonify({
-            'stop_gost': 'stop_gost_no_auth'
-        })
+    client = docker.from_env()
+    container = client.containers.get('zzztkip')
+    container.stop()
+    return jsonify({
+        'stop_gost': container.status
+    })
 
 
 @app.route('/start_gost')
 def start_gost():
-    ip_str = request.remote_addr
-    auth_ip_str = get_domain_ip('a.wmd2bl5c2u66nxg5wh97xq50hvi63jcp.com')
-    if ip_str == auth_ip_str:
-        client = docker.from_env()
-        container = client.containers.get('zzztkip')
-        container.start()
-        return jsonify({
-            'start_gost': container.status
-        })
-    else:
-        return jsonify({
-            'start_gost': 'start_gost_no_auth'
-        })
+    client = docker.from_env()
+    container = client.containers.get('zzztkip')
+    container.start()
+    return jsonify({
+        'start_gost': container.status
+    })
 
 
 @app.route("/ping")
