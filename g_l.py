@@ -13,12 +13,6 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 
 
-def get_domain_ip(domain):
-    addr_info = socket.getaddrinfo(domain, None)
-    for item in addr_info:
-        if item[4][0]:
-            return item[4][0]
-
 
 @app.route('/get_gost_logs')
 def get_gost_logs():
