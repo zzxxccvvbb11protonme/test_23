@@ -15,14 +15,6 @@ INTERVAL = 3
 
 app = Flask(__name__)
 
-intervals = (
-	# ('weeks', 604800),  # 60 * 60 * 24 * 7
-	('days', 86400),  # 60 * 60 * 24
-	('hours', 3600),  # 60 * 60
-	('minutes', 60),
-	('seconds', 1),
-)
-
 
 def get_cpu():
 	arch = cpuinfo.get_cpu_info()['arch']
@@ -40,7 +32,15 @@ def get_cpu():
 	}
 
 
-def display_time(seconds, granularity=3):
+intervals = (
+	('days', 60 * 60 * 24),
+	('hours', 60 * 60),
+	('minutes', 60),
+	('seconds', 1),
+)
+
+
+def display_time(seconds, granularity=4):
 	result = []
 
 	for name, count in intervals:
@@ -53,18 +53,21 @@ def display_time(seconds, granularity=3):
 	return ', '.join(result[:granularity])
 
 
+
+
+
 def get_uptime():
 	return int(time.time() - psutil.boot_time())
 
 
 def get_memory():
 	virtual_memory = psutil.virtual_memory()
-	return virtual_memory.total / 1024.0, virtual_memory.used / 1024.0
+	return virtual_memory.total, virtual_memory.used
 
 
 def get_swap():
 	swap_memory = psutil.swap_memory()
-	return swap_memory.total / 1024.0, swap_memory.used / 1024.0
+	return swap_memory.total, swap_memory.used
 
 
 def get_hdd():
@@ -163,43 +166,17 @@ def get_load():
 @app.route('/get_node_status')
 def get_node_status():
 	net_in, net_out = liuliang()
-	uptime = get_uptime()
 
-	memory_total, memory_used = get_memory()
-	swap_total, swap_used = get_swap()
-	hdd_total, hdd_used = get_hdd()
-
-	cpu = get_cpu()
 	netrx, nettx = net_speed()
 
-	array = {}
-	array['online4'] = get_network(4)
-	array['online6'] = get_network(6)
-
-	array['uptime'] = display_time(uptime)
+	array = dict()
+	array['memory'] = get_memory()
+	array['swap'] = get_swap()
+	array['hdd'] = get_hdd()
+	array['cpu'] = get_cpu()
+	array['uptime'] = get_uptime()
 	array['load'] = get_load()
-	array['memory_total'] = str(round(memory_total / 1024 / 1024, 2)) + ' G'
-
-	if memory_used >= 1024 * 1024:
-		array['memory_used'] = str(round(memory_used / 1024 / 1024, 2)) + ' G'
-	else:
-		array['memory_used'] = str(round(memory_used / 1024, 2)) + ' M'
-
-	if swap_total >= 1024 * 1024:
-		array['swap_total'] = str(round(swap_total / 1024 / 1024, 2)) + ' G'
-	else:
-		array['swap_total'] = str(round(swap_total / 1024, 2)) + ' M'
-
-	if swap_used >= 1024 * 1024:
-		array['swap_used'] = str(round(swap_used / 1024 / 1024, 2)) + ' G'
-	elif 1024 <= swap_used < 1024 * 1024:
-		array['swap_used'] = str(round(swap_used / 1024, 2)) + ' M'
-	else:
-		array['swap_used'] = str(round(swap_used, 2)) + ' K'
-
-	array['hdd_total'] = str(round(hdd_total / 1024, 2)) + ' G'
-	array['hdd_used'] = str(round(hdd_used / 1024, 2)) + ' G'
-	array['cpu'] = cpu
+	array['network_status'] = {'ipv4': get_network(4), 'ipv6': get_network(6)}
 
 	array['network_rx'] = str(round(netrx / 1024 / 1024, 2)) + ' MB/S'
 
