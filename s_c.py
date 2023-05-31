@@ -32,25 +32,7 @@ def get_cpu():
 	}
 
 
-intervals = (
-	('days', 60 * 60 * 24),
-	('hours', 60 * 60),
-	('minutes', 60),
-	('seconds', 1),
-)
 
-
-def display_time(seconds, granularity=4):
-	result = []
-
-	for name, count in intervals:
-		value = seconds // count
-		if value:
-			seconds -= value * count
-			if value == 1:
-				name = name.rstrip('s')
-			result.append("{} {}".format(value, name))
-	return ', '.join(result[:granularity])
 
 
 
@@ -83,7 +65,7 @@ def get_hdd():
 		usage = psutil.disk_usage(disk)
 		size += usage.total
 		used += usage.used
-	return int(size / 1024.0 / 1024.0), int(used / 1024.0 / 1024.0)
+	return size, used
 
 
 def liuliang():
