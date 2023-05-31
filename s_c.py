@@ -40,7 +40,7 @@ def get_cpu():
 	}
 
 
-def display_time(seconds, granularity=2):
+def display_time(seconds, granularity=3):
 	result = []
 
 	for name, count in intervals:
@@ -50,7 +50,7 @@ def display_time(seconds, granularity=2):
 			if value == 1:
 				name = name.rstrip('s')
 			result.append("{} {}".format(value, name))
-	return '__'.join(result[:granularity])
+	return ', '.join(result[:granularity])
 
 
 def get_uptime():
