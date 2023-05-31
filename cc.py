@@ -26,8 +26,15 @@ intervals = (
 	('seconds', 1),
 )
 
-def vps_info():
-	return cpuinfo.get_cpu_info()
+def cpu_info():
+	x=cpuinfo.get_cpu_info()
+	arch=x['arch']+'_'+x['arch_string_raw']
+	cpu_name=x['brand_raw']
+	core_num=psutil.cpu_count(logical=False)
+	core_num_logical=psutil.cpu_count(logical=True)
+	cpu_percent_list=psutil.cpu_percent(interval=1, percpu=True)
+
+	return arch,cpu_name,core_num,core_num_logical,cpu_percent_list
 
 def display_time(seconds, granularity=2):
 	result = []
@@ -222,4 +229,4 @@ def ping():
 
 if __name__ == '__main__':
 	#app.run(host="0.0.0.0", port=4171, debug=True)
-	pprint(vps_info())
+	pprint(cpu_info())
