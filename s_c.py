@@ -11,7 +11,6 @@ import psutil
 from flask import Flask, jsonify
 from loguru import logger
 
-
 INTERVAL = 3
 
 app = Flask(__name__)
@@ -32,7 +31,13 @@ def get_cpu():
 	core_num_logical = psutil.cpu_count(logical=True)
 	cpu_percent_list = psutil.cpu_percent(interval=INTERVAL, percpu=True)
 
-	return arch, cpu_name, core_num, core_num_logical, cpu_percent_list
+	return {
+		'arch': arch,
+		'cpu_name': cpu_name,
+		'core_num': core_num,
+		'core_num_logical': core_num_logical,
+		'cpu_percent_list': cpu_percent_list
+	}
 
 
 def display_time(seconds, granularity=2):
