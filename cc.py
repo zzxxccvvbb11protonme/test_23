@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # coding: utf-8
+from pprint import pprint
 
+import cpuinfo
 import logging
 import os
 import socket
@@ -25,7 +27,7 @@ intervals = (
 )
 
 def vps_info():
-	return platform.platform(),platform.processor(),platform.machine()
+	return cpuinfo.get_cpu_info()
 
 def display_time(seconds, granularity=2):
 	result = []
@@ -220,4 +222,4 @@ def ping():
 
 if __name__ == '__main__':
 	#app.run(host="0.0.0.0", port=4171, debug=True)
-	print(vps_info())
+	pprint(vps_info())
